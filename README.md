@@ -10,8 +10,6 @@ Organizational notes and code for two sequencing sets:
 ## Sample organization
 - Full information on DNAs for each individual sampled across natural distribution can be found in `XXXXXXXXXX`. This file also has the updated plate maps with specified IDs.
 
-- barcode key files correspond with LIB1 (plates 1-6; `barcode_info_FRALAT_NaturalPopulations_Plate1-6.csv`) 
-
 - **NOTE** DNA was extracted in December 2022 at AG Biotech. Plates in lab freezer need to be tranported to -80.
 
 ## GBS workflow
@@ -22,20 +20,18 @@ Organizational notes and code for two sequencing sets:
 
 **NEED TO DO**: anneal more MSE adaptors, order iproof (have martinson order a tube), order ladder
 
-### 12/19-12/22: R/L and PCR for plates 1-6. Master mix in `FRAXONE_RFseq_mastermixcockatils.xlsx`.
-
+### 12/19-12/22: R/L and PCR for plates 1-6. Master mix in `KRLA_RFseq_mastermixcockatils.xlsx`.
 
 
 ## Data analysis: contaminant cleaning, barcode parsing, data storage, directory organization, and initial analyses.
 
-We generated 1 lanes of S2 chemistry NovaSeq data at UTGSAF in March of 2023. 
-
-
+We generated 1 lane of S2 chemistry NovaSeq data at UTGSAF in March of 2023. 
 
 ## This file contains code and notes for
 1) cleaning contaminants using tapioca
 2) parsing barcodes
 3) splitting fastqs 
+
 4) de novo assembly
 5) reference based assembly
 6) calling variants
@@ -44,18 +40,16 @@ We generated 1 lanes of S2 chemistry NovaSeq data at UTGSAF in March of 2023.
 
 ## 1. Cleaning contaminants
 
-Being executed on ponderosa using tapioca pipeline. Commands in two bash scripts (cleaning_bash_CADE.sh and cleaning_bash_SEGI.sh), executed as below (2/16/23). This was for two S2 NovaSeq lanes generated in late December 2022.
+Being executed on ponderosa using tapioca pipeline. Commands in two bash scripts (cleaning_bash_CADE.sh and cleaning_bash_SEGI.sh), executed as below (6/9/23). This was for one S2 NovaSeq lanes generated in late December 2022.
 
 Decompress fastq file:
 
     $ gunzip KRLA_S1_L001_R1_001.fastq.gz
 
-
 Number of reads **before** cleaning:
 
     $ nohup grep -c "^@" KRLA_S1_L001_R1_001.fastq > KRLA_number_of_rawreads.txt &
     ## raw reads: 
-
 
 To run cleaning_bash* tapioca wrapper, exit conda environment, load modules, and run bash scripts.
 
@@ -67,31 +61,26 @@ To run cleaning_bash* tapioca wrapper, exit conda environment, load modules, and
 # DONE TO HERE
 After .clean.fastq has been produced, rm raw data:
 
-    $ rm -rf FRLA1_S1_L001_R1_001.fastq &
-    $ rm -rf FRLA2_S2_L002_R1_001.fastq &
-
+    $ rm -rf KRLA_S1_L001_R1_001.fastq &
+   
 # DONE TO HERE ********
 
 Raw data will stay stored in: /archive/parchman_lab/rawdata_to_backup/FRLA/
 
 Number of reads **after** cleaning:
 
-
-    $ nohup grep -c "^@" FRLA1.clean.fastq > FRLA1_clean_reads.txt &
-    # FRLA1 : 1528882238
-
-    $ nohup grep -c "^@" FRLA2.clean.fastq > FRLA2_clean_reads.txt.txt &
-    # FRLA2: 1566562636
+    $ nohup grep -c "^@" KRLA.clean.fastq > FRLA1_clean_reads.txt &
+    # 
 
 ####################################################################################
 ## 2. Barcode parsing:
 ####################################################################################
 
-Be sure to deactivate conda environment before running the below steps. Barcode keyfiles are `/working/parchman/FRLA/FRLA1_barcode_key.csv` and `/working/parchman/FRLA/FRLA2_barcode_key.csv`
+Be sure to deactivate conda environment before running the below steps. Barcode keyfiles are `/working/parchman/KRLA/KRLA_barcode_key.csv` 
 
 Parsing FRLA1 library:
 
-    $ nohup perl parse_barcodes768.pl FRLA1_barcode_key.csv FRLA1.clean.fastq A00 &>/dev/null &
+    $ nohup perl parse_barcodes768.pl KRLA_barcode_key.csv KRLA.clean.fastq A00 &>/dev/null &
 
 
 Parsing FRLA2 library:
