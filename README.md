@@ -78,58 +78,41 @@ Number of reads **after** cleaning:
 
 Be sure to deactivate conda environment before running the below steps. Barcode keyfiles are `/working/parchman/KRLA/KRLA_barcode_key.csv` 
 
-Parsing FRLA1 library:
+Parsing KRLA library:
 
     $ nohup perl parse_barcodes768.pl KRLA_barcode_key.csv KRLA.clean.fastq A00 &>/dev/null &
 
-
-Parsing FRLA2 library:
-
-    $ nohup perl parse_barcodes768.pl FRLA2_barcode_key.csv FRLA2.clean.fastq A00 &>/dev/null &
 
 
 
 `NOTE`: the A00 object is the code that identifies the sequencer (first three characters after the @ in the fastq identifier).
 
-    $ less parsereport_FRLA1.clean.fastq
-    Good mids count: 1470709510
-    Bad mids count: 58172533
-
-    $ less parsereport_FRLA2.clean.fastq
-    
-
+    $ less parsereport_KRLA.clean.fastq
+    Good mids count: 1571963061
+    Bad mids count: 73508410
+    Number of seqs with potential MSE adapter in seq: 321195
+    Seqs that were too short after removing MSE and beyond: 428
 
 
 ####################################################################################
 ## 3. splitting fastqs
 ####################################################################################
 
-For FRLA, doing this in `/working/parchman/FRLA/splitfastqs_FRLA*`
+For KRLA, doing this in `/working/parchman/KRLA/splitfastqs`
+
+# DONE TO HERE
 
 Make ids file
 
-    $ cut -f 3 -d "," FRLA1_barcode_key.csv | grep "_" > FRLA1_ids_noheader.txt
-
-    $ cut -f 3 -d "," FRLA2_barcode_key.csv | grep "_" > FRLA2_ids_noheader.txt
+    $ cut -f 3 -d "," KRLA_barcode_key.csv | grep "_" > KRLA_ids_noheader.txt
 
 
 Split fastqs by individual
 
-    $ nohup perl splitFastq_universal_regex.pl FRLA1_ids_noheader.txt parsed_FRLA1.clean.fastq &>/dev/null &
-
-    $ nohup perl splitFastq_universal_regex.pl FRLA2_ids_noheader.txt parsed_FRLA2.clean.fastq &>/dev/null &
+    $ nohup perl splitFastq_universal_regex.pl KRLA_ids_noheader.txt parsed_KRLA.clean.fastq &>/dev/null &
 
 # DONE TO HERE &&&&&&&&&&
 
 
 Zip the parsed*fastq files for now, but delete once patterns and qc are verified.
 
-### Moving fastqs to project specific directories
-
-Fastqs by species are located on ponderosa in:
-
-FRLA1:
-`/working/parchman/FRLA`
-
-FRLA2:
-`/working/parchman/FRLA`
