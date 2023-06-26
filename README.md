@@ -58,12 +58,11 @@ To run cleaning_bash* tapioca wrapper, exit conda environment, load modules, and
     
     $ bash cleaning_bash_KRLA.sh &
 
-# DONE TO HERE
+
 After .clean.fastq has been produced, rm raw data:
 
     $ rm -rf KRLA_S1_L001_R1_001.fastq &
    
-# DONE TO HERE ********
 
 Raw data will stay stored in: /archive/parchman_lab/rawdata_to_backup/FRLA/
 
@@ -100,8 +99,6 @@ Parsing KRLA library:
 
 For KRLA, doing this in `/working/parchman/KRLA/splitfastqs`
 
-# DONE TO HERE
-
 Make ids file
 
     $ cut -f 3 -d "," KRLA_barcode_key.csv | grep "_" > KRLA_ids_noheader.txt
@@ -111,8 +108,10 @@ Split fastqs by individual
 
     $ nohup perl splitFastq_universal_regex.pl KRLA_ids_noheader.txt parsed_KRLA.clean.fastq &>/dev/null &
 
-# DONE TO HERE &&&&&&&&&&
 
+'gzip' all .fastq files
 
-Zip the parsed*fastq files for now, but delete once patterns and qc are verified.
+gzipped the parsed*fastq files for now, but delete once patterns and qc are verified.
 
+    $ nohup gzip *fastq &>/dev/null &
+    
